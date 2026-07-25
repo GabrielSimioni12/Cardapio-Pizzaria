@@ -4,254 +4,403 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Pizzaria do Gabriel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,700;1,600&family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="cardapio.css">
 </head>
 <body>
 
+  <!-- Fundo fixo desacoplado do scroll (evita travamento causado por background-attachment: fixed) -->
+  <div class="fundo-fixo" aria-hidden="true"></div>
+
+  <!-- Barra de progresso de leitura -->
+  <div class="barra-progresso" id="barraProgresso"></div>
+
   <header class="cabecalho">
-    <h1>Bem-vindo à Pizzaria do Gabriel!</h1>
-    <img src="https://raw.githubusercontent.com/GabrielSimioni12/Cardapio-Digital-Pizzaria/024138b6c2bfaafdd25555900dd383eac149cb98/imagens/list-solid-full.svg" alt="Abrir Menu" id="menuToggle" />
+    <div class="cabecalho-marca">
+      <button id="menuToggle" class="btn-hamburguer" aria-label="Abrir menu" aria-expanded="false" aria-controls="menuLateral">
+        <span></span><span></span><span></span>
+      </button>
+      <h1>Pizzaria do Gabriel</h1>
+    </div>
+
+    <button id="abrirCarrinhoBtn" class="btn-carrinho" aria-label="Abrir carrinho" aria-expanded="false" aria-controls="carrinho">
+      <img src="imagens/11036127_shopping_cart_sale_supermarket_flower_icon.png" alt="">
+      <span id="carrinhoContagem" class="carrinho-contagem" aria-hidden="true">0</span>
+    </button>
   </header>
 
-  <!-- Hotbar abaixo do título -->
-<nav class="hotbar">
-  <ul>
-    <li>
-      <a href="#pizzas">
-        <img src="imagens/pizzaCerta.png" alt="Pizza" class="icone"> Pizzas
-      </a>
-    </li>
-    <li>
-      <a href="#sobremesas">
-        <img src="imagens/9407876_ice_cream_dessert_food_icon.png" alt="Sobremesas" class="icone"> Sobremesas
-      </a>
-    </li>
-    <li>
-      <a href="#bebidas">
-        <img src="imagens/refrigerantes.png" alt="Bebidas" class="icone"> Bebidas
-      </a>
-    </li>
-    <li>
-      <a href="#agradecimento">
-        <img src="imagens/4781818_account_avatar_face_man_people_icon.png" alt="Agradecimento" class="icone"> Agradecimento
-      </a>
-    </li>
-  </ul>
-</nav>
+  <!-- Navegação principal -->
+  <nav class="hotbar" aria-label="Categorias do cardápio">
+    <ul>
+      <li>
+        <a href="#pizzas" class="ativo">
+          <img src="imagens/pizzaCerta.png" alt="" class="icone"> Pizzas
+        </a>
+      </li>
+      <li>
+        <a href="#sobremesas">
+          <img src="imagens/9407876_ice_cream_dessert_food_icon.png" alt="" class="icone"> Sobremesas
+        </a>
+      </li>
+      <li>
+        <a href="#bebidas">
+          <img src="imagens/refrigerantes.png" alt="" class="icone"> Bebidas
+        </a>
+      </li>
+      <li>
+        <a href="#agradecimento">
+          <img src="imagens/4781818_account_avatar_face_man_people_icon.png" alt="" class="icone"> Agradecimento
+        </a>
+      </li>
+    </ul>
+  </nav>
 
-  
-  <!-- Menu lateral (abre com ícone) -->
+  <!-- Menu lateral (mobile) -->
   <div id="menuLateral" class="menu-lateral">
     <ul>
-      <li><a href="#pizzas">Pizzas</a></li>
-      <li><a href="#pizzas-doces">Pizzas Doces</a></li>
-      <li><a href="#bebidas">Bebidas</a></li>
+      <li><a href="#pizzas">🍕 Pizzas</a></li>
+      <li><a href="#sobremesas">🍧 Sobremesas</a></li>
+      <li><a href="#bebidas">🥤 Bebidas</a></li>
+      <li><a href="#agradecimento">🙋 Agradecimento</a></li>
     </ul>
   </div>
-  
+  <div id="overlayMenu" class="overlay"></div>
 
-  <div class="container-produtos">
-  <!-- cards aqui dentro -->
-</div>
-
-  <!-- Botão com ícone para abrir/fechar o carrinho -->
-<button id="abrirCarrinhoBtn">
-  <img src="imagens/11036127_shopping_cart_sale_supermarket_flower_icon.png" alt="Carrinho">
-</button>
-
-<!-- Carrinho inteligente -->
-<aside id="carrinho">
-  <h2>Carrinho</h2>
-  <ul id="itens-carrinho"></ul>
-  <p><strong>Total: R$ <span id="total-carrinho">0,00</span></strong></p> 
-  <button id="finalizarPedido">Finalizar Pedido</button>
-<p id="mensagemConfirmacao" style="display: none; margin-top: 10px; color: green; font-weight: bold;">
-  ✅ Seu pedido foi enviado! Obrigado por usar o meu site!
-</p>
-</aside>
-
-<section id="pizzas"  class="secao">
-  <h2>Pizzas Salgadas</h2>
-
-  <div class="produto-card margherita">
-    <img src="imagens/pexels-antonius-ferret-6223177.jpg" alt="Pizza Margherita" class="imagem-produto">
-    <h3>Margherita</h3>
-    <p>Mussarela, tomate, manjericão e azeite.</p>
-    <strong>R$ 39,90</strong>
-    <button onclick="adicionarAoCarrinho('Margherita', 39.90)">Adicionar ao Carrinho</button>
-  </div>
-
-  <div class="produto-card calabresa">
-    <img src="imagens/pexels-pedrofurtadoo-31094820.jpg" alt="Pizza Calabresa" class="imagem-produto">
-    <h3>Calabresa</h3>
-    <p>Calabresa fatiada, cebola e azeitonas.</p>
-    <strong>R$ 42,90</strong>
-    <button onclick="adicionarAoCarrinho('Calabresa', 42.90)">Adicionar ao Carrinho</button>
-  </div>
-
-  <div class="produto-card frango">
-    <img src="imagens/pexels-pedrofurtadoo-31450857.jpg" alt="Pizza Frango com Catupiry" class="imagem-produto"> 
-    <h3>Frango com Catupiry</h3>
-    <p>Frango desfiado e catupiry cremoso.</p>
-    <strong>R$ 44,90</strong>
-    <button onclick="adicionarAoCarrinho('Frango com Catupiry', 44.90)">Adicionar ao Carrinho</button>
-  </div>
-
-  <div class="produto-card portuguesa">
-    <img src="imagens/1399febce0667511c4c4314a36c80a28_pizza-portuguesa.jpg" alt="Pizza Portuguesa" class="imagem-produto">
-    <h3>Portuguesa</h3>
-    <p>Presunto, ovos, cebola, azeitonas e ervilhas.</p>
-    <strong>R$ 43,90</strong>
-    <button onclick="adicionarAoCarrinho('Portuguesa', 43.90)">Adicionar ao Carrinho</button>
-  </div>
-
-  <div class="produto-card quatro-queijos">
-    <img src="imagens/pizza-mussarela.jpg" alt="Pizza Quatro Queijos" class="imagem-produto">
-    <h3>Quatro Queijos</h3>
-    <p>Mussarela, parmesão, gorgonzola e catupiry.</p>
-    <strong>R$ 47,90</strong>
-    <button onclick="adicionarAoCarrinho('Quatro Queijos', 47.90)">Adicionar ao Carrinho</button>
-  </div>
-
-  <div class="produto-card atum ">
-    <img src="imagens/pizza-de-atum-de-liquidificador.webp" alt="Pizza Atum" class="imagem-produto">
-    <h3>Atum</h3>
-    <p>Atum, cebola, tomate e azeitonas.</p>
-    <strong>R$ 42,90</strong>
-    <button onclick="adicionarAoCarrinho('Atum', 42.90)">Adicionar ao Carrinho</button>
-  </div>
-
-  <div class="produto-card palmito">
-    <img src="imagens/pizza palmito.jpg" alt=Palmito class="imagem-produto">
-    <h3>Palmito</h3>
-    <p>Palmito, ervilhas e catupiry.</p>
-    <strong>R$ 45,90</strong>
-    <button onclick="adicionarAoCarrinho('Palmito', 45.90)">Adicionar ao Carrinho</button>
-  </div>
-
-  <div class="produto-card vegana">
-    <img src="imagens/pizza-vegana.jpeg" alt="Vegana" class="imagem-produto">
-    <h3>Vegana</h3>
-    <p>Legumes grelhados e queijo vegetal.</p>
-    <strong>R$ 48,90</strong>
-    <button onclick="adicionarAoCarrinho('Vegana', 48.90)">Adicionar ao Carrinho</button>
-  </div>
-
-  <div class="produto-card bacon">
-    <img src="imagens/R0325-SL-pizza-de-bacon-fatiado-cebola-caramelizada-1200x675-1.webp" alt="Pizza Bacon" class="imagem-produto">
-    <h3>Bacon</h3>
-    <p>Bacon crocante, queijo e molho barbecue.</p>
-    <strong>R$ 46,90</strong>
-    <button onclick="adicionarAoCarrinho('Bacon', 46.90)">Adicionar ao Carrinho</button>
-  </div>
-
-  <div class="produto-card mexicana">
-    <img src="imagens/mexicana.jpg" alt="Pizza Mexicana" class="imagem-produto">
-    <h3>Mexicana</h3>
-    <p>Calabresa, milho, pimenta e queijo.</p>
-    <strong>R$ 44,90</strong>
-    <button onclick="adicionarAoCarrinho('Mexicana', 44.90)">Adicionar ao Carrinho</button>
-  </div>
-</section>
-
-<section id="sobremesas" class="secao">
-  <h2>Pizzas Doces</h2>
-
-  <div class="produto-card cholate">
-    <img src="imagens/pizza-de-chocolate-com-morango.avif" alt="Pizza Chocolate com Morango" class="imagem-produto">
-    <h3>Chocolate com Morango</h3>
-    <p>Creme de chocolate e morangos frescos.</p>
-    <strong>R$ 39,90</strong>
-    <button onclick="adicionarAoCarrinho('Chocolate com Morango', 39.90)">Adicionar ao Carrinho</button>
-  </div>
-
-  <div class="produto-card romeu-e-julieta">
-    <img src="imagens/pizza-romeu-e-julieta.avif" alt="Romeu e Julieta" class="imagem-produto">
-    <h3>Romeu e Julieta</h3>
-    <p>Goiabada com queijo cremoso.</p>
-    <strong>R$ 35,90</strong>
-    <button onclick="adicionarAoCarrinho('Romeu e Julieta', 35.90)">Adicionar ao Carrinho</button>
-  </div>
-
-  <div class="produto-card banana">
-    <img src="imagens/pizzadebananaecanela.jpg" alt="Banana com Canela" class="imagem-produto">
-    <h3>Banana com Canela</h3>
-    <p>Banana fatiada e canela polvilhada.</p>
-    <strong>R$ 34,90</strong>
-    <button onclick="adicionarAoCarrinho('Banana com Canela', 34.90)">Adicionar ao Carrinho</button>
-  </div>
-
-  <div class="produto-card prestigio">
-    <img src="imagens/pizza prestigio.png" alt="Pizza Prestígio" class="imagem-produto">
-    <h3>Prestígio</h3>
-    <p>Chocolate e coco ralado.</p>
-    <strong>R$ 38,90</strong>
-    <button onclick="adicionarAoCarrinho('Prestígio', 38.90)">Adicionar ao Carrinho</button>
-  </div>
-</section>
-
-
-
-<section id="bebidas" class="secao">
-  <h2>Bebidas</h2>
-
-  <div class="produto-card card-bebida">
-    <img src="imagens/refrigerante-coca-cola-lata-350ml_jpg.webp" alt="Coca-Cola Lata" class="imagem-produto">
-    <h3>Refrigerante Coca-Cola</h3>
-    <p>Lata 350ml</p>
-    <strong>R$ 6,00</strong>
-    <button onclick="adicionarAoCarrinho('Coca-Cola', 6.00)">Adicionar ao Carrinho</button>
-  </div>
-
-  <div class="produto-card card-bebida">
-    <img src="imagens/laranja.jpeg" alt="Suco de Laranja" class="imagem-produto">
-    <h3>Suco de Laranja</h3>
-    <p>Natural, 300ml</p>
-    <strong>R$ 8,00</strong>
-    <button onclick="adicionarAoCarrinho('Suco de Laranja', 8.00)">Adicionar ao Carrinho</button>
-  </div>
-
-  <div class="produto-card card-bebida">
-    <img src="imagens/2893-agua-mineral-crystal-sem-gas-500ml.jpg" alt="Àgua 500ml" class="imagem-produto">
-    <h3>Água Mineral</h3>
-    <p>500ml, sem gás</p>
-    <strong>R$ 4,00</strong>
-    <button onclick="adicionarAoCarrinho('Água Mineral', 4.00)">Adicionar ao Carrinho</button>
-  </div>
-
-  <div class="produto-card card-bebida">
-    <img src="imagens/759785217-cha-gelado-simples.webp" alt="Chá Gelado" class="imagem-produto">
-    <h3>Chá Gelado</h3>
-    <p>Sabor limão, 350ml</p>
-    <strong>R$ 6,50</strong>
-    <button onclick="adicionarAoCarrinho('Chá Gelado', 6.50)">Adicionar ao Carrinho</button>
-  </div>
-
-  <div class="produto-card card-bebida">
-    <img src="imagens/guarana.webp" alt="Guaraná Lata" class="imagem-produto">
-    <h3>Guaraná Antarctica</h3>
-    <p>Lata 350ml</p>
-    <strong>R$ 6,00</strong>
-    <button onclick="adicionarAoCarrinho('Guaraná Antarctica', 6.00)">Adicionar ao Carrinho</button>
-  </div>
-</section>
-
-
-
-
-<!-- Seção de Agradecimento -->
-<section id="agradecimento" class="secao">
-  <div class="agradecimento-container">
-    <img src="imagens/Imagem do WhatsApp de 2025-07-24 à(s) 00.14.38_b504577c.jpg" alt="Gabriel Simioni" class="foto-agradecimento">
-    <h2>Obrigado por visitar nosso cardápio digital!</h2>
-    <p>Projeto desenvolvido por Gabriel Simioni – estudante de Ciência da Computação na FIAP.</p>
-    <div class="links-contato">
-      <a href="mailto:gabrielsiminiwo@gmail.com" target="_blank">📧 E-mail</a>
-      <a href="https://www.linkedin.com/in/gabrielsimioni22" target="_blank">🔗 LinkedIn</a>
+  <!-- Carrinho lateral -->
+  <aside id="carrinho" class="carrinho-painel" aria-hidden="true">
+    <div class="carrinho-cabecalho">
+      <h2>Seu Carrinho</h2>
+      <button id="fecharCarrinhoBtn" class="btn-fechar" aria-label="Fechar carrinho">✕</button>
     </div>
-  </div>
-</section>
 
+    <div id="carrinhoVazio" class="carrinho-vazio">
+      <span class="carrinho-vazio-icone">🛒</span>
+      <p>Seu carrinho está vazio</p>
+      <span class="carrinho-vazio-sub">Adicione algo gostoso do cardápio!</span>
+    </div>
+
+    <ul id="itens-carrinho" class="carrinho-lista"></ul>
+
+    <div class="carrinho-rodape">
+      <div class="carrinho-linha">
+        <span>Subtotal</span>
+        <span id="subtotal-carrinho">R$ 0,00</span>
+      </div>
+      <div class="carrinho-linha carrinho-total">
+        <span>Total</span>
+        <span>R$ <span id="total-carrinho">0,00</span></span>
+      </div>
+      <button id="finalizarPedido" class="btn-finalizar">Finalizar Pedido</button>
+      <p id="mensagemConfirmacao" class="mensagem-confirmacao">✅ Seu pedido foi enviado! Obrigado por usar o meu site!</p>
+    </div>
+  </aside>
+  <div id="overlayCarrinho" class="overlay"></div>
+
+  <main>
+    <section id="pizzas" class="secao">
+      <h2>Pizzas Salgadas</h2>
+      <div class="grade-produtos">
+
+        <article class="produto-card">
+          <div class="produto-imagem-wrap">
+            <img src="imagens/pexels-antonius-ferret-6223177.jpg" alt="Pizza Margherita" class="produto-imagem" loading="lazy">
+          </div>
+          <div class="produto-info">
+            <h3 class="produto-nome">Margherita</h3>
+            <p class="produto-desc">Mussarela, tomate, manjericão e azeite.</p>
+            <div class="produto-rodape">
+              <span class="produto-preco">R$ 39,90</span>
+              <button class="btn-adicionar" onclick="adicionarAoCarrinho('Margherita', 39.90, 'imagens/pexels-antonius-ferret-6223177.jpg')">+ Adicionar</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="produto-card">
+          <div class="produto-imagem-wrap">
+            <img src="imagens/pexels-pedrofurtadoo-31094820.jpg" alt="Pizza Calabresa" class="produto-imagem" loading="lazy">
+          </div>
+          <div class="produto-info">
+            <h3 class="produto-nome">Calabresa</h3>
+            <p class="produto-desc">Calabresa fatiada, cebola e azeitonas.</p>
+            <div class="produto-rodape">
+              <span class="produto-preco">R$ 42,90</span>
+              <button class="btn-adicionar" onclick="adicionarAoCarrinho('Calabresa', 42.90, 'imagens/pexels-pedrofurtadoo-31094820.jpg')">+ Adicionar</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="produto-card">
+          <div class="produto-imagem-wrap">
+            <img src="imagens/pexels-pedrofurtadoo-31450857.jpg" alt="Pizza Frango com Catupiry" class="produto-imagem" loading="lazy">
+          </div>
+          <div class="produto-info">
+            <h3 class="produto-nome">Frango com Catupiry</h3>
+            <p class="produto-desc">Frango desfiado e catupiry cremoso.</p>
+            <div class="produto-rodape">
+              <span class="produto-preco">R$ 44,90</span>
+              <button class="btn-adicionar" onclick="adicionarAoCarrinho('Frango com Catupiry', 44.90, 'imagens/pexels-pedrofurtadoo-31450857.jpg')">+ Adicionar</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="produto-card">
+          <div class="produto-imagem-wrap">
+            <img src="imagens/1399febce0667511c4c4314a36c80a28_pizza-portuguesa.jpg" alt="Pizza Portuguesa" class="produto-imagem" loading="lazy">
+          </div>
+          <div class="produto-info">
+            <h3 class="produto-nome">Portuguesa</h3>
+            <p class="produto-desc">Presunto, ovos, cebola, azeitonas e ervilhas.</p>
+            <div class="produto-rodape">
+              <span class="produto-preco">R$ 43,90</span>
+              <button class="btn-adicionar" onclick="adicionarAoCarrinho('Portuguesa', 43.90, 'imagens/1399febce0667511c4c4314a36c80a28_pizza-portuguesa.jpg')">+ Adicionar</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="produto-card">
+          <div class="produto-imagem-wrap">
+            <img src="imagens/pizza-mussarela.jpg" alt="Pizza Quatro Queijos" class="produto-imagem" loading="lazy">
+          </div>
+          <div class="produto-info">
+            <h3 class="produto-nome">Quatro Queijos</h3>
+            <p class="produto-desc">Mussarela, parmesão, gorgonzola e catupiry.</p>
+            <div class="produto-rodape">
+              <span class="produto-preco">R$ 47,90</span>
+              <button class="btn-adicionar" onclick="adicionarAoCarrinho('Quatro Queijos', 47.90, 'imagens/pizza-mussarela.jpg')">+ Adicionar</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="produto-card">
+          <div class="produto-imagem-wrap">
+            <img src="imagens/pizza-de-atum-de-liquidificador.webp" alt="Pizza Atum" class="produto-imagem" loading="lazy">
+          </div>
+          <div class="produto-info">
+            <h3 class="produto-nome">Atum</h3>
+            <p class="produto-desc">Atum, cebola, tomate e azeitonas.</p>
+            <div class="produto-rodape">
+              <span class="produto-preco">R$ 42,90</span>
+              <button class="btn-adicionar" onclick="adicionarAoCarrinho('Atum', 42.90, 'imagens/pizza-de-atum-de-liquidificador.webp')">+ Adicionar</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="produto-card">
+          <div class="produto-imagem-wrap">
+            <img src="imagens/pizza palmito.jpg" alt="Pizza Palmito" class="produto-imagem" loading="lazy">
+          </div>
+          <div class="produto-info">
+            <h3 class="produto-nome">Palmito</h3>
+            <p class="produto-desc">Palmito, ervilhas e catupiry.</p>
+            <div class="produto-rodape">
+              <span class="produto-preco">R$ 45,90</span>
+              <button class="btn-adicionar" onclick="adicionarAoCarrinho('Palmito', 45.90, 'imagens/pizza palmito.jpg')">+ Adicionar</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="produto-card">
+          <div class="produto-imagem-wrap">
+            <img src="imagens/pizza-vegana.jpeg" alt="Pizza Vegana" class="produto-imagem" loading="lazy">
+          </div>
+          <div class="produto-info">
+            <h3 class="produto-nome">Vegana</h3>
+            <p class="produto-desc">Legumes grelhados e queijo vegetal.</p>
+            <div class="produto-rodape">
+              <span class="produto-preco">R$ 48,90</span>
+              <button class="btn-adicionar" onclick="adicionarAoCarrinho('Vegana', 48.90, 'imagens/pizza-vegana.jpeg')">+ Adicionar</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="produto-card">
+          <div class="produto-imagem-wrap">
+            <img src="imagens/R0325-SL-pizza-de-bacon-fatiado-cebola-caramelizada-1200x675-1.webp" alt="Pizza Bacon" class="produto-imagem" loading="lazy">
+          </div>
+          <div class="produto-info">
+            <h3 class="produto-nome">Bacon</h3>
+            <p class="produto-desc">Bacon crocante, queijo e molho barbecue.</p>
+            <div class="produto-rodape">
+              <span class="produto-preco">R$ 46,90</span>
+              <button class="btn-adicionar" onclick="adicionarAoCarrinho('Bacon', 46.90, 'imagens/R0325-SL-pizza-de-bacon-fatiado-cebola-caramelizada-1200x675-1.webp')">+ Adicionar</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="produto-card">
+          <div class="produto-imagem-wrap">
+            <img src="imagens/mexicana.jpg" alt="Pizza Mexicana" class="produto-imagem" loading="lazy">
+          </div>
+          <div class="produto-info">
+            <h3 class="produto-nome">Mexicana</h3>
+            <p class="produto-desc">Calabresa, milho, pimenta e queijo.</p>
+            <div class="produto-rodape">
+              <span class="produto-preco">R$ 44,90</span>
+              <button class="btn-adicionar" onclick="adicionarAoCarrinho('Mexicana', 44.90, 'imagens/mexicana.jpg')">+ Adicionar</button>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <section id="sobremesas" class="secao">
+      <h2>Pizzas Doces</h2>
+      <div class="grade-produtos">
+
+        <article class="produto-card">
+          <div class="produto-imagem-wrap">
+            <img src="imagens/pizza-de-chocolate-com-morango.avif" alt="Pizza Chocolate com Morango" class="produto-imagem" loading="lazy">
+          </div>
+          <div class="produto-info">
+            <h3 class="produto-nome">Chocolate com Morango</h3>
+            <p class="produto-desc">Creme de chocolate e morangos frescos.</p>
+            <div class="produto-rodape">
+              <span class="produto-preco">R$ 39,90</span>
+              <button class="btn-adicionar" onclick="adicionarAoCarrinho('Chocolate com Morango', 39.90, 'imagens/pizza-de-chocolate-com-morango.avif')">+ Adicionar</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="produto-card">
+          <div class="produto-imagem-wrap">
+            <img src="imagens/pizza-romeu-e-julieta.avif" alt="Pizza Romeu e Julieta" class="produto-imagem" loading="lazy">
+          </div>
+          <div class="produto-info">
+            <h3 class="produto-nome">Romeu e Julieta</h3>
+            <p class="produto-desc">Goiabada com queijo cremoso.</p>
+            <div class="produto-rodape">
+              <span class="produto-preco">R$ 35,90</span>
+              <button class="btn-adicionar" onclick="adicionarAoCarrinho('Romeu e Julieta', 35.90, 'imagens/pizza-romeu-e-julieta.avif')">+ Adicionar</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="produto-card">
+          <div class="produto-imagem-wrap">
+            <img src="imagens/pizzadebananaecanela.jpg" alt="Pizza Banana com Canela" class="produto-imagem" loading="lazy">
+          </div>
+          <div class="produto-info">
+            <h3 class="produto-nome">Banana com Canela</h3>
+            <p class="produto-desc">Banana fatiada e canela polvilhada.</p>
+            <div class="produto-rodape">
+              <span class="produto-preco">R$ 34,90</span>
+              <button class="btn-adicionar" onclick="adicionarAoCarrinho('Banana com Canela', 34.90, 'imagens/pizzadebananaecanela.jpg')">+ Adicionar</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="produto-card">
+          <div class="produto-imagem-wrap">
+            <img src="imagens/pizza prestigio.png" alt="Pizza Prestígio" class="produto-imagem" loading="lazy">
+          </div>
+          <div class="produto-info">
+            <h3 class="produto-nome">Prestígio</h3>
+            <p class="produto-desc">Chocolate e coco ralado.</p>
+            <div class="produto-rodape">
+              <span class="produto-preco">R$ 38,90</span>
+              <button class="btn-adicionar" onclick="adicionarAoCarrinho('Prestígio', 38.90, 'imagens/pizza prestigio.png')">+ Adicionar</button>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <section id="bebidas" class="secao">
+      <h2>Bebidas</h2>
+      <div class="grade-produtos">
+
+        <article class="produto-card">
+          <div class="produto-imagem-wrap">
+            <img src="imagens/refrigerante-coca-cola-lata-350ml_jpg.webp" alt="Coca-Cola Lata" class="produto-imagem" loading="lazy">
+          </div>
+          <div class="produto-info">
+            <h3 class="produto-nome">Refrigerante Coca-Cola</h3>
+            <p class="produto-desc">Lata 350ml</p>
+            <div class="produto-rodape">
+              <span class="produto-preco">R$ 6,00</span>
+              <button class="btn-adicionar" onclick="adicionarAoCarrinho('Coca-Cola', 6.00, 'imagens/refrigerante-coca-cola-lata-350ml_jpg.webp')">+ Adicionar</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="produto-card">
+          <div class="produto-imagem-wrap">
+            <img src="imagens/laranja.jpeg" alt="Suco de Laranja" class="produto-imagem" loading="lazy">
+          </div>
+          <div class="produto-info">
+            <h3 class="produto-nome">Suco de Laranja</h3>
+            <p class="produto-desc">Natural, 300ml</p>
+            <div class="produto-rodape">
+              <span class="produto-preco">R$ 8,00</span>
+              <button class="btn-adicionar" onclick="adicionarAoCarrinho('Suco de Laranja', 8.00, 'imagens/laranja.jpeg')">+ Adicionar</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="produto-card">
+          <div class="produto-imagem-wrap">
+            <img src="imagens/2893-agua-mineral-crystal-sem-gas-500ml.jpg" alt="Água Mineral 500ml" class="produto-imagem" loading="lazy">
+          </div>
+          <div class="produto-info">
+            <h3 class="produto-nome">Água Mineral</h3>
+            <p class="produto-desc">500ml, sem gás</p>
+            <div class="produto-rodape">
+              <span class="produto-preco">R$ 4,00</span>
+              <button class="btn-adicionar" onclick="adicionarAoCarrinho('Água Mineral', 4.00, 'imagens/2893-agua-mineral-crystal-sem-gas-500ml.jpg')">+ Adicionar</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="produto-card">
+          <div class="produto-imagem-wrap">
+            <img src="imagens/759785217-cha-gelado-simples.webp" alt="Chá Gelado" class="produto-imagem" loading="lazy">
+          </div>
+          <div class="produto-info">
+            <h3 class="produto-nome">Chá Gelado</h3>
+            <p class="produto-desc">Sabor limão, 350ml</p>
+            <div class="produto-rodape">
+              <span class="produto-preco">R$ 6,50</span>
+              <button class="btn-adicionar" onclick="adicionarAoCarrinho('Chá Gelado', 6.50, 'imagens/759785217-cha-gelado-simples.webp')">+ Adicionar</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="produto-card">
+          <div class="produto-imagem-wrap">
+            <img src="imagens/guarana.webp" alt="Guaraná Antarctica Lata" class="produto-imagem" loading="lazy">
+          </div>
+          <div class="produto-info">
+            <h3 class="produto-nome">Guaraná Antarctica</h3>
+            <p class="produto-desc">Lata 350ml</p>
+            <div class="produto-rodape">
+              <span class="produto-preco">R$ 6,00</span>
+              <button class="btn-adicionar" onclick="adicionarAoCarrinho('Guaraná Antarctica', 6.00, 'imagens/guarana.webp')">+ Adicionar</button>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <section id="agradecimento" class="secao">
+      <div class="agradecimento-container">
+        <img src="imagens/Imagem do WhatsApp de 2025-07-24 à(s) 00.14.38_b504577c.jpg" alt="Gabriel Simioni" class="foto-agradecimento">
+        <h2>Obrigado por visitar nosso cardápio digital!</h2>
+        <p>Projeto desenvolvido por Gabriel Simioni – estudante de Ciência da Computação na FIAP.</p>
+        <div class="links-contato">
+          <a href="mailto:gabrielsiminiwo@gmail.com" target="_blank">📧 E-mail</a>
+          <a href="https://www.linkedin.com/in/gabrielsimioni22" target="_blank">🔗 LinkedIn</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Toast de confirmação -->
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
   <script src="pizza.js"></script>
 </body>
